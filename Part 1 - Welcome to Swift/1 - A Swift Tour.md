@@ -183,3 +183,52 @@ print(maior)
 
 > EXPERIÊNCIA
 > Adicione uma nova variável para registrar qual é o tipo do maior número, além do seu valor.
+
+Use `while` para repetir um bloco de código até que uma condição mude. A condição de um laço também pode estar no final, assegurando que o laço seja executado pelo menos uma vez.
+
+````
+var n = 2
+while n < 100 {
+    n = n * 2
+}
+print(n)
+
+var m = 2
+repeat {
+    m = m * 2
+} while m < 100
+print(m)
+````
+
+Você pode manter um índice em um laço - usando ou `..<` para determinar a extensão de valores de um índice ou escrevendo explicitamente uma inicialização, uma condição e um incremento. Estes dois laços fazem a mesma coisa:
+
+````
+var primeiroLaço = 0
+for i in 0..<4 {
+    primeiroLaço += i
+}
+print(primeiroLaço)
+
+var segundoLaço = 0
+for var i = 0; i < 4; ++i {
+    segundoLaço += i
+}
+print(segundoLaço)
+````
+
+Use `..<` para determinar uma extensão de valores que exclui seu valor superior, e use `...` para criar uma que o inclui.
+
+<!-- TODO: Existe tradução melhor para closure? -->
+## Funções e Closures
+
+Use `func` para declarar uma função. Chame a função adicionando, depois de seu nome, uma lista de argumentos entre parênteses. Use `->` para separar, de um lado, os nomes e tipos dos parâmetros e, do outro, o valor de retorno da função.
+
+````
+func cumprimentar(nome: String, dia: String) -> String {
+    return "Olá \(nome), hoje é \(dia)."
+}
+greet("Bob", dia: "terça-feira")
+````
+
+> EXPERIÊNCIA
+> Remova o parâmetro `dia`. Adicione um parâmetro para incluir o especial do almoço de hoje no cumprimento.
