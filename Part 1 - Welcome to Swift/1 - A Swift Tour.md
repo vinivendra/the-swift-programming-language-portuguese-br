@@ -1,4 +1,3 @@
-
 # Uma Excursão Rápida
 
 A tradição sugere que o primeiro programa em uma nova linguagem deve imprimir as palavras "Olá, mundo!" na tela. Em Swift, isso pode ser feito em uma só linha:
@@ -20,9 +19,9 @@ https://developer.apple.com/go/?id=swift-tour
 <!-- TODO: Esse link deve ser atualizado para uma versão em português do Playground, quando estiver completo. -->
 
 
-# Valores Simples
+## Valores Simples
 
-Use `let` para criar uma constante e `var` para criar uma variável. O valor de uma constante não precisa ser conhecido em tempo de compilação, mas deve-se associar um valor a essa constante exatamente uma vez. Isso significa que você pode usar constantes para nomear um valor que você determina uma vez mas utiliza em muitos lugares.
+Use `let` para criar uma constante e `var` para criar uma variável. O valor de uma constante não precisa ser conhecido em tempo de compilação, mas deve-se atribuir um valor a essa constante exatamente uma vez. Isso significa que você pode usar constantes para nomear um valor que você determina uma vez mas utiliza em muitos lugares.
 
 ````
 var minhaVariável = 42
@@ -30,7 +29,7 @@ minhaVariável = 50
 let minhaConstante = 42
 ````
 
-Uma constante ou variável precisa ser do mesmo tipo que o valor que você quer associar a ela. Apesar disso, você não precisa sempre escrever o tipo explicitamente. Fornecer um valor quando você cria uma constante ou variável deixa o cpmpilador inferir seu tipo. No exemplo acima, o compilador infere que `minhaVariável` é um inteiro porque seu valor inicial é um inteiro.
+Uma constante ou variável precisa ser do mesmo tipo que o valor que você quer atribuir a ela. Apesar disso, você não precisa sempre escrever o tipo explicitamente. Fornecer um valor quando você cria uma constante ou variável deixa o cpmpilador inferir seu tipo. No exemplo acima, o compilador infere que `minhaVariável` é um inteiro porque seu valor inicial é um inteiro.
 
 Se o valor inicial não fornece informação suficiente (ou sse não existe um valor inicial), especifique o tipo escrevendo ele depois da variável, separado por dois pontos.
 
@@ -88,9 +87,99 @@ let vetorVazio = [String]()
 let dicionárioVazio = [String: Float]()
 ````
 
-Se a informação sobre o tipo puder ser inferida, você pode escrever um vetor vazio como `[]` e um dicionário vazio como `[:]` - por exemplo, quando você associa um novo valor a uma variável ou passa um argumento para uma função.
+Se a informação sobre o tipo puder ser inferida, você pode escrever um vetor vazio como `[]` e um dicionário vazio como `[:]` - por exemplo, quando você atribui um novo valor a uma variável ou passa um argumento para uma função.
 
 ````
 listaDeCompras = []
 profissões = [:]
 ````
+
+## Fluxo de Controle
+
+Use `if`  e `switch` para criar condicionais, e use `for-in`, `for`, `while` e `repeat-while` para criar laços. Parênteses em torno da condição ou da variável do laço são opcionais. Chaves em torno do corpo são necessárias.
+
+````
+let pontuaçõesIndividuais = [75, 43, 103, 87, 12]
+var pontuaçãoDoTime = 0
+for pontuação in pontuaçõesIndividuais {
+    if pontuação > 50 {
+        pontuaçãoDoTime += 3
+    } else {
+        pontuaçãoDoTime += 1
+    }
+}
+print(pontuaçãoDoTime)
+````
+
+Em um `if`, a condição deve ser uma expressão booleana - isso significa que código como `if pontuação { ... }` é um erro, não uma comparação implícita com zero.
+
+Você pode usar `if` e `let` juntos para trabalhar com valores que podem estar faltando. Esses valores são representados como opcionais. Um valor opcional contém ou um valor ou `nil` para indicar a ausência de um valor. Escreva um ponto de interrogação (`?`) depois do tipo de um valor para marcar o valor como opcional.
+
+````
+var stringOpcional: String? = "Olá"
+print(stringOpcional == nil)
+
+var nomeOpcional: String? = "John Appleseed"
+var cumprimento = "Olá!"
+if let nome = nomeOpcional {
+    cumprimento = "Olá, \(nome)"
+}
+````
+
+> EXPERIÊNCIA
+> Mude `nomeOpcional` para `nil`. Qual cumprimento você obtém? Adicione uma cláusula `else` que atribui um cumprimento diferente se `nomeOpcional` for `nil`.
+
+Se o valor opcional for `nil`, a condição é falsa e o código em chaves é pulado. Caso contrário, o valor opcional é desembrulhado e atribuído à constante que segue o `let`, o que torna o valor desembrulhado disponível dentro do bloco de código.
+
+Outro jeito de lidar com valores opcionais é fornecendo um valor padrão usando o operador `??`. Se o valor opcional estiver ausente, o valor padrão é usado no lugar.
+
+````
+let apelido: String? = nil
+let nomeCompleto: String = "John Appleseed"
+let cumprimentoInformal = "Oi \(apelido ?? nomeCompleto)"
+````
+
+Comandos `switch` aceitam qualquer tipo de dados e uma ampla variedade de operações de comparação - eles não são limitados a inteiros e testes de igualdade.
+
+````
+let vegetal = "pimenta vermelha"
+switch vegetal {
+case "aipo":
+    print("Adicione algumas uvas passas.")
+case "pepino", "agrião":
+    print("Isso faz um bom sanduíche.")
+case let x where x.hasSuffix("pimenta"):
+    print("É uma \(x) quente?")
+default:
+    print("Tudo fica bom em uma sopa.")
+}
+````
+
+> EXPERIÊNCIA
+> Tente remover o caso `default`. Qual erro você obtém?
+
+Note como `let` pode ser usado em um padrão para atribuir o valor que combinou com aquela parte padrão a uma constante.
+
+Depois de executar o código dentro do caso escolhido, o programa sai do comando `switch`. A execução não continua para o próximo caso, então não é necessário sair explicitamente do `switch` no fim do código de cada caso.
+
+Você usa `for-in` para percorrer itens em um dicionário, fornecendo um par de nomes para usar com cada par de chave e valor. Dicionários são uma coleção sem ordem, então suas chaves e valores são percorridos em ordem arbitrária.
+
+````
+let númerosInteressantes = [
+    "Primos": [2, 3, 5, 7, 11, 13],
+    "Fibonacci": [1, 1, 2, 3, 5, 8],
+    "Quadrados": [1, 4, 9, 16, 25],
+]
+var maior = 0
+for (tipo, números) in númerosInteressantes {
+    for número in números {
+        if número > maior {
+            maior = número
+        }
+    }
+}
+print(maior)
+````
+
+> EXPERIÊNCIA
+> Adicione uma nova variável para registrar qual é o tipo do maior número, além do seu valor.
