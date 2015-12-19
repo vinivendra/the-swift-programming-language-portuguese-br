@@ -232,3 +232,102 @@ greet("Bob", dia: "terça-feira")
 
 > EXPERIÊNCIA
 > Remova o parâmetro `dia`. Adicione um parâmetro para incluir o especial do almoço de hoje no cumprimento.
+
+Usa uma tupla para criar um valor composto - por exemplo, para retornan múltiplos valores de uma função. Os elementos de uma tupla podem ser referenciados ou por nome ou por número.
+
+````
+func calcularEstatisticas(pontuações: [Int]) -> (min: Int, max: Int, soma: Int) {
+    var min = scores[0]
+    var max = scores[0]
+    var soma = 0
+
+    for pontuação in pontuações {
+        if pontuação > max {
+            max = pontuação
+        } else if pontuação < min {
+            min = pontuação
+        }
+        soma += pontuação
+    }
+
+    return (min, max, soma)
+}
+let estatísticas = calcularEstatisticas([5, 3, 100, 3, 9])
+print(estatísticas.sum)
+print(estatísticas.2)
+````
+
+Funções também podem ter um número variável de argumentos, coletando eles em um vetor.
+
+````
+func somaDe(números: Int...) -> Int {
+    var soma = 0
+    for número in números {
+        soma += número
+    }
+    return soma
+}
+somaDe()
+somaDe(42, 597, 12)
+````
+
+> EXPERIÊNCIA
+> Escreva uma função que calcule a média dos seus argumentos.
+
+Funções podem ser aninhadas. Funções aninhadas têm acesso a variáveis que foram declaradas na função externa. Você pode usar funções aninhadas para organizar o código em uma função que for longa ou complexa.
+
+````
+func retornaQuinze() -> Int {
+    var y = 10
+    func adiciona() {
+        y += 5
+    }
+    adiciona()
+    return y
+}
+retornaQuinze()
+````
+
+Funções são um tipo de primeira classe. Isso significa que a função pode retornar outra função como seu valor.
+
+````
+func criarIncrementador() -> ((Int) -> Int) {
+    func somaUm(number: Int) -> Int {
+        return 1 + number
+    }
+    return somaUm
+}
+var incrementa = criarIncrementador()
+incrementa(7)
+````
+
+Uma função pode receber outra como um de seus argumentos.
+
+````
+func temValoresVálidos(lista: [Int], condição: (Int) -> Bool) -> Bool {
+    for item in lista {
+        if condição(item) {
+            return true
+        }
+    }
+    return false
+}
+func menosDeDez(número: Int) -> Bool {
+    return número < 10
+}
+var números = [20, 19, 7, 12]
+temValoresVálidos(números, condição: menosDeDez)
+````
+
+Funções na verdade são um caso especial de closures: blocos de código que podem ser chamados mais tarde. O código em uma closure tem acesso a coisas como variáveis e funções que foram avaliadas no escopo em que a closure foi criada, mesmo se a closure estiver em um escopo diferente quando for executada - você já viu um exemplo disso em funções aninhadas. Você pode escrever uma closure sem nome ao colocá-la entre chaves (`{}`). Use `in` para separar tanto os argumentos quanto o tipo de retorno do corpo da closure.
+
+````
+números.map({
+    (número: Int) -> Int in
+    let resultado = 3 * número
+    return resultado
+})
+````
+
+> EXPERIÊNCIA
+> Reescreva a closure para retornar zero para todos os números pares.    
