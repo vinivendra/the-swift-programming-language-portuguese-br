@@ -331,3 +331,92 @@ números.map({
 
 > EXPERIÊNCIA
 > Reescreva a closure para retornar zero para todos os números pares.    
+
+<!-- Existe uma tradução boa de callback ou de delegate? -->
+
+Você tem diversas opções para escrever closures mais concisamente. Quando o tipo de uma closure já é conhecido, como em um callback de um delegate, você pode omitir o tipo dos seus parâmetros, o seu tipo de retorno, ou ambos. Closures que consistirem de apenas um comando implicitamente retornam o valor deste comando.
+
+````
+let númerosMapeados = números.map({ número in 3 * número })
+print(númerosMapeados)
+````
+
+Você pode se referir a parâmetros por número em vez de por nome - essa abordagem é especialmente útil em closures muito curtas. Uma closure passada como último argumento de uma função pode aparecer imediatamente depois dos parênteses. Quando uma closure é o único argumento de uma função, você pode omitir os parênteses.
+
+````
+let númerosOrdenados = números.sort { $0 > $1 }
+print(númerosOrdenados)
+````
+
+## Objetos e Classes
+
+Use `class` seguido do nome de uma classe para criar uma classe. A declaração de uma propriedade em uma classe é escrita do mesmo jeito que a declaração de uma constante ou uma variável, só que contexto de uma classe. Da mesma forma, declarações de métodos e funções são escritas da mesma maneira.
+
+````
+class FormaGeométrica {
+    var númeroDeLados = 0
+    func descriçãoSimples() -> String {
+        return "Uma forma geométrica com \(númeroDeLados) lados."
+    }
+}
+````
+
+> EXPERIÊNCIA
+> Adicione uma propriedade constante com `let`, e adicione um outro método que recebe um argumento.
+
+Crie uma isntância de uma classe colocando parênteses depois do nome da classe. Use pontos para acessar as propriedades e métodos da instância.
+
+````
+var forma = FormaGeométrica()
+forma.númeroDeLados = 7
+var descriçãoDaForma = forma.descriçãoSimples()
+````
+
+Está faltando uma coisa importante nessa versão da classe FormaGeométrica: um inicializador para configurar a classe quando uma instância é criada. Use `init` para criar um.
+
+````
+class FormaNomeada {
+    var númeroDeLados: Int = 0
+    var nome: String
+
+    init(nome: String) {
+        self.nome = nome
+    }
+
+    func descriçãoSimples() -> String {
+        return "Uma forma com \(númeroDeLados) lados."
+    }
+}
+````
+
+Perceba como `self` é usado para distinguir a propriedade `nome` do argumento `nome` passado para o inicializador. Os argumentos para o inicializador são passados como em uma chamada de função quando se cria uma instância de uma classe. É necessário atribuir valores a todas as propriedades - ou em sua declaração (como na propriedade de `númeroDeLados`) ou no inicializador (como em `nome`).
+
+Use `deinit` para criar um des-inicializador se você precisar fazer algum tipo de limpeza antes que o objeto seja apagado da memória.
+
+Subclasses incluem o nome de sua superclasse depois do seu próprio nome, separado por dois pontos. Não é necessário herdar de nenhuma classe raiz padrão, então você pode incluir ou omitir uma superclasse conforme necessário. Métodos em uma subclasse que substituem a implementação da superclasse são marcados com `override` - substituir um método por acidente, sem `override`, é detectado pelo compilador como um erro. O compilador também detecta métodos com `override` que não realmente substituem nenhum método na superclasse.
+
+````
+class Quadrado: FormaNomeada {
+    var tamanhoDoLado: Double
+
+    init(tamanhoDoLado: Double, nome: String) {
+        self.tamanhoDoLado = tamanhoDoLado
+        super.init(nome: nome)
+        númeroDeLados = 4
+    }
+
+    func área() ->  Double {
+        return tamanhoDoLado * tamanhoDoLado
+    }
+
+    override func descriçãoSimples() -> String {
+        return "Um quadrado com lados de tamanho \(tamanhoDoLado)."
+    }
+}    
+let teste = Quadrado(tamanhoDoLado: 5.2, nome: "meu quadrado de teste")
+teste.área()
+teste.descriçãoSimples()
+````
+
+> EXPERIÊNCIA
+> Faça outra subclasse de `FormaNomeada` chamada `Círculo` qye rebeba um raio e um nome como parâmetros para o seu inicializador. Implemente um método `área()` e um método `descriçãoSimples()` na classe `Círculo`.
