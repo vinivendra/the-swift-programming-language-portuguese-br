@@ -420,3 +420,75 @@ teste.descriçãoSimples()
 
 > EXPERIÊNCIA
 > Faça outra subclasse de `FormaNomeada` chamada `Círculo` qye rebeba um raio e um nome como parâmetros para o seu inicializador. Implemente um método `área()` e um método `descriçãoSimples()` na classe `Círculo`.
+
+Além de propriedades simples que são armazenadas, propriedades podem usar procedimentos para obter ou alterar seu valor.
+
+````
+class TriânguloEquilátero: FormaNomeada {
+    var tamanhoDoLado: Double = 0.0
+
+    init(tamanhoDoLado: Double, nome: String) {
+        self.tamanhoDoLado = tamanhoDoLado
+        super.init(nome: nome)
+        númeroDeLados = 3
+    }
+
+    var perímetro: Double {
+        get {
+            return 3.0 * tamanhoDoLado
+        }
+        set {
+            tamanhoDoLado = newValue / 3.0
+        }
+    }
+
+    override func descriçãoSimples() -> String {
+        return "Um triângulo equilátero com lados de tamanho \(tamanhoDoLado)."
+    }
+}
+var triângulo = TriânguloEquilátero(tamanhoDoLado: 3.1, nome: "um triângulo")
+print(triângulo.perímetro)
+triângulo.perímetro = 9.9
+print(triângulo.tamanhoDoLado)
+````
+
+No procedimento de alteração (`set`) do valor do `perímetro`, o novo valor tem o nome implícito de `newValue`. Você pode fornecer um nome explícito em parênteses depois de `set`.
+
+Perceba que o inicializador do `TriânguloEquilátero` tem três passos diferentes:
+
+1. Atribuir valor a propriedades que a subclasse declara.
+2. Chamar o inicializador da superclasse.
+3. Mudar o valor de propriedades definidas pela superclasse. Quaisquer outras configurações que usem métodos ou procedimentos de obtenção e atribuição de propriedades podem ser alteradas a esse ponto.
+
+Se você não precisa calcular o valor da propriedade mas precisa fornecer código que é executado antes e depois de atribuir um novo valor, use `willSet` e `didSet`, respectivamente. O código que você fornecer vai ser executado toda vez que um valor mudar fora de um inicializador. Por exemplo, a classe abaixo se assegura que o tamanho do lado do seu triângulo é sempre o mesmo que o tamanho do lado do seu quadrado.
+
+````
+class TriânguloEQuadrado {
+    var triângulo: TriânguloEquilátero {
+        willSet {
+            quadrado.tamanhoDoLado = newValue.tamanhoDoLado
+        }
+    }
+    var quadrado: Quadrado {
+        willSet {
+            triângulo.tamanhoDoLado = newValue.tamanhoDoLado
+        }
+    }
+    init(tamanho: Double, nome: String) {
+        quadrado = Quadrado(tamanhoDoLado: tamanho, nome: nome)
+        triângulo = TriânguloEquilátero(tamanhoDoLado: tamanho, nome: nome)
+    }
+}
+var triânguloEQuadrado = TriânguloEQuadrado(tamanho: 10, nome: "outra forma de teste")
+print(triânguloEQuadrado.quadrado.tamanhoDoLado)
+print(triânguloEQuadrado.triângulo.tamanhoDoLado)
+triânguloEQuadrado.quadrado = Quadrado(tamanhoDoLado: 50, nome: "quadrado maior")
+print(triânguloEQuadrado.triângulo.tamanhoDoLado)
+````
+
+Quando se estiver trabalhando com valores opcionais, você pode escrever `?` antes de operações como métodos, propriedades e indexações. Se o valor de `?` for `nil`, tudo depois do `?` é ignorado e o valor da expressão é `nil`. Caso contrário, o valor opcional é desembrulhado, e tudo depois do `?` é acionado em cima do valor desembrulhado. Em ambos os casos, o valor da expressão é um valor opcional.
+
+````
+let quadradoOpcional: Quadrado? = Quadrado(tamanhoDoLado: 2.5, nome: "quadrado opcional")
+let tamanhoDoLado = quadradoOpcional?.tamanhoDoLado
+````
