@@ -492,3 +492,66 @@ Quando se estiver trabalhando com valores opcionais, você pode escrever `?` ant
 let quadradoOpcional: Quadrado? = Quadrado(tamanhoDoLado: 2.5, nome: "quadrado opcional")
 let tamanhoDoLado = quadradoOpcional?.tamanhoDoLado
 ````
+
+## Enumerações e Estruturas
+
+Use `enum` para criar uma enumeração. Como em classes e em todos os outros tipos com nomes, enumerações podem ter métodos associados a elas.
+
+````
+enum Valor: Int {
+    case Ás = 1
+    case Dois, Três, Quatro, Cinco, Seis, Sete, Oito, Nove, Dez
+    case Valete, Dama, Rei
+    func descriçãoSimples() -> String {
+        switch self {
+        case .Ás:
+            return "ás"
+        case .Valete:
+            return "valete"
+        case .Dama:
+            return "dama"
+        case .Rei:
+            return "rei"
+        default:
+            return String(self.rawValue)
+        }
+    }
+}
+let ás = Valor.Ás
+let valorDoÁs = ás.rawValue
+````
+
+> EXPERIÊNCIA
+> Escreva uma função que faça uma comparação entre dois valores do tipo `Valor`, comparando seus valores brutos.
+
+No exemplo acima, o tipo usado para o valor bruto da enumeração é `Int`, então você só precisa especificar o primeiro valor bruto. O resto dos valores brutos são atribuídos em ordem. Você também pode usar string ou números em ponto flutuante como o tipo bruto de uma enumeração. Use a propriedade `rawValue` para acessar o valor bruto de casos em enumerações.
+
+Use o inicializador `init?(rawValue:)` para criar uma instância de uma enumeração a partir de um valor bruto.
+
+````
+if let valorConvertido = Valor(rawValue: 3) {
+    let descriçãoDoTrês = valorConvertido.descriçãoSimples()
+}
+````
+
+Os valores representados por enumerações são valores reais, não apenas um outro modo de escrever seus valores brutos. Na verdade, para casos em que não há um valor bruto significativo, você não precisa fornecer um.
+
+````
+enum Naipe {
+    case Espadas, Copas, Ouros, Paus
+    func descriçãoSimples() -> String {
+        switch self {
+        case .Espadas:
+            return "espadas"
+        case .Copas:
+            return "copas"
+        case .Ouros:
+            return "ouros"
+        case .Paus:
+            return "paus"
+        }
+    }
+}
+let copas = Naipe.Copas
+let descriçãodeCopas = copas.descriçãoSimples()
+````
