@@ -555,3 +555,51 @@ enum Naipe {
 let copas = Naipe.Copas
 let descriçãodeCopas = copas.descriçãoSimples()
 ````
+
+> EXPERIÊNCIA
+> Adicione um método `cor()` ao `Naipe` que retorne "preto" para espadas e paus e "vermelho" para copas e ouros.
+
+Repare nos dois modos de que o naipe de `Copas` é referenciado acima: quando se atribui um valor à constante `copas`, o caso da enumeração é referenciado pelo seu nome completo, `Naipe.Copas`, porque a constante ainda não tem um tipo explícito especificado; dentro do `switch`, o caso da enumeração é referenciado pela sua forma abreviada `.Copas` porque já se sabe que o valor de `self` é um `Naipe`. Você pode usar a forma abreviada sempre que o tipo de um valor já for conhecido.
+
+Use `struct` para criar uma estrutura. Estruturas aceitam muitos dos mesmos  comportamentos que classes, incluindo métodos e inicializadores. Uma das diferenças mais importantes entre estruturas e classes é que estruturas são sempre copiadas quando são passadas pelo seu código, mas classes são sempre passadas por referência.
+
+````
+struct Carta {
+    var valor: Valor
+    var naipe: Naipe
+    func descriçãoSimples() -> String {
+        return "O \(valor.descriçãoSimples()) de \(naipe.descriçãoSimples())"
+    }
+}
+let trêsDeEspadas = Carta(valor: .Três, naipe: .Espadas)
+let descriçãoDoTrêsDeEspadas = trêsDeEspadas.descriçãoSimples()
+````
+
+> EXPERIÊNCIA
+> Adicione um método à estrutura `Carta` que cria um baralho completo, com uma carta para cada combinação de valor e naipe.
+
+Uma instância de caso de enumeração pode ter valores associados. Instâncias do mesmo caso de enumeração podem ter valores diferentes associados. Você fornece valores associados quando cria a instância. Valores associados são diferentes de valores brutos: o valor bruto de um caso de enumeração é o mesmo para todas as suas instâncias, e você fornece o valor bruto quando define a enumeração.
+
+Por exemplo, considere uma solicitação a um servidor pelo horário de nascer e pôr do sol. O servidor pode responder ou com a informação solicitada ou com alguma informação de erro.
+
+````
+enum RespostaDoServidor {
+    case Resultado(String, String)
+    case Erro(String)
+}
+
+let sucesso = RespostaDoServidor.Resultado("6:00", "20:09")
+let falha = RespostaDoServidor.Erro("Falta de queijo.")
+
+switch sucesso {
+case let .Resultado(nascerDoSol, pôrDoSol):
+    print("O sol nasce às \(nascerDoSol) e se põe às \(pôrDoSol).")
+case let .Erro(erro):
+    print("Falha...  \(erro)")
+}
+````
+
+> EXPERIÊNCIA
+> Acidione um terceiro caso à `RespostaDoServidor` e ao `switch`.
+
+Perceba como os horários de nascer e pôr do sol são extraídos do valor da  `RespostaDoServidor` como parte de combinar o padrão do valor com os casos do `switch`.
